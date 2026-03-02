@@ -3,7 +3,6 @@ import {
     type AfterViewChecked,
     ChangeDetectorRef,
     type ComponentRef,
-    computed,
     Directive,
     effect,
     inject,
@@ -17,6 +16,7 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {tuiZonefreeScheduler} from '@taiga-ui/cdk/observables';
 import {type TuiContext} from '@taiga-ui/cdk/types';
 import {tuiInjectElement} from '@taiga-ui/cdk/utils/dom';
+import {tuiGenerateId} from '@taiga-ui/cdk/utils/miscellaneous';
 import {
     tuiAsVehicle,
     type TuiRectAccessor,
@@ -71,6 +71,7 @@ export class TuiDropdownDirective
         }
     });
 
+    public readonly id = tuiGenerateId();
     public readonly ref = signal<ComponentRef<unknown> | null>(null);
     public readonly el = tuiInjectElement();
     public readonly type = 'dropdown';
@@ -79,14 +80,15 @@ export class TuiDropdownDirective
         inject(INJECTOR),
     );
 
-    public readonly tuiDropdown = input<PolymorpheusContent<TuiContext<() => void>>>();
-    public readonly content = computed<PolymorpheusContent<TuiContext<() => void>>>(
-        (content = this.tuiDropdown()) => {
-            return content instanceof TemplateRef
+    public readonly content = input(null, {
+        alias: 'tuiDropdown',
+        transform: (
+            content: PolymorpheusContent<TuiContext<() => void>>,
+        ): PolymorpheusContent<TuiContext<() => void>> =>
+            content instanceof TemplateRef
                 ? new PolymorpheusTemplate(content, this.cdr)
-                : content;
-        },
-    );
+                : content,
+    });
 
     public get position(): 'absolute' | 'fixed' {
         return tuiCheckFixedPosition(this.el) ? 'fixed' : 'absolute';
@@ -114,8 +116,7 @@ export class TuiDropdownDirective
             ref.destroy();
         }
 
-        // TODO: Remove in v5, only needed in Angular 16
-        this.cdr.markForCheck();
+        this.ref()?.location.nativeElement.setAttribute('id', this.id);
         this.drivers.forEach((driver) => driver?.next(show));
     }
 }

@@ -1,6 +1,10 @@
 import {LocationStrategy, PathLocationStrategy, ViewportScroller} from '@angular/common';
 import {HttpClient, provideHttpClient, withFetch} from '@angular/common/http';
-import {type ApplicationConfig, inject, provideZoneChangeDetection} from '@angular/core';
+import {
+    type ApplicationConfig,
+    inject,
+    provideExperimentalZonelessChangeDetection,
+} from '@angular/core';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {
     NavigationStart,
@@ -247,8 +251,8 @@ export const config: ApplicationConfig = {
                     return import('@taiga-ui/i18n/languages/hebrew');
                 case 'italian':
                     return import('@taiga-ui/i18n/languages/italian');
-                case 'japan':
-                    return import('@taiga-ui/i18n/languages/japan');
+                case 'japanese':
+                    return import('@taiga-ui/i18n/languages/japanese');
                 case 'kazakh':
                     return import('@taiga-ui/i18n/languages/kazakh');
                 case 'korean':
@@ -275,10 +279,7 @@ export const config: ApplicationConfig = {
                     return import('@taiga-ui/i18n/languages/english');
             }
         }),
-        provideZoneChangeDetection({
-            eventCoalescing: false,
-            runCoalescing: false,
-        }),
+        provideExperimentalZonelessChangeDetection(),
         {
             provide: TUI_DIALOGS_CLOSE,
             useFactory: () =>

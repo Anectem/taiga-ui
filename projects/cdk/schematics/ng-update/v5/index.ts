@@ -17,14 +17,21 @@ import {
 } from '../../utils/format-migration-stats';
 import {getExecutionTime} from '../../utils/get-execution-time';
 import {runSteps} from '../../utils/run-steps';
-import {removeModules, replaceIdentifiers, showWarnings} from '../steps';
+import {
+    removeDuplicates,
+    removeModules,
+    replaceIdentifiers,
+    showWarnings,
+} from '../steps';
 import {getFileSystem} from '../utils/get-file-system';
 import {replaceFunctions} from '../utils/replace-functions';
 import {REPLACE_FUNCTIONS} from './steps/constants/functions';
 import {IDENTIFIERS_TO_REPLACE} from './steps/constants/identifiers-to-replace';
 import {MIGRATION_WARNINGS} from './steps/constants/migration-warnings';
 import {MODULES_TO_REMOVE} from './steps/constants/modules-to-remove';
+import {migrateBreakpointService} from './steps/migrate-breakpoint-service';
 import {migrateCssVariables} from './steps/migrate-css-variables';
+import {migratePackages} from './steps/migrate-packages';
 import {migrateTemplates} from './steps/migrate-templates';
 import {migrateTokens} from './steps/migrate-tokens/migrate-tokens';
 import {updateTsConfig} from './steps/migrate-tokens/update-tsconfig';
@@ -57,6 +64,14 @@ function main(options: TuiSchema, timings: MigrationStepTiming[]): Rule {
                     step: () => replaceIdentifiers(options, IDENTIFIERS_TO_REPLACE),
                 },
                 {
+                    name: 'migrateBreakpointService',
+                    step: () => migrateBreakpointService(tree, options),
+                },
+                {
+                    name: 'migratePackages',
+                    step: migratePackages,
+                },
+                {
                     name: 'migrateTemplates',
                     step: () => migrateTemplates(fileSystem, options),
                 },
@@ -67,6 +82,10 @@ function main(options: TuiSchema, timings: MigrationStepTiming[]): Rule {
                 {
                     name: 'migrateStyles',
                     step: migrateStyles,
+                },
+                {
+                    name: 'removeDuplicates',
+                    step: () => removeDuplicates(options),
                 },
             ],
             timings,

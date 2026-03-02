@@ -1,3 +1,4 @@
+import {hasElementAttributeWithValue} from '../../../../utils/templates/elements';
 import {type HtmlComment} from '../../../interfaces';
 import {hasChild} from '../../../utils/templates/dom-traversal';
 import {TUI_THICKNESS_COMMENT} from '../migrate-css-variables';
@@ -30,5 +31,17 @@ export const HTML_COMMENTS: HtmlComment[] = [
             '[style.--tui-thickness]',
         ],
         comment: TUI_THICKNESS_COMMENT,
+    },
+    {
+        tag: 'tui-pagination',
+        filterFn: (el) => hasElementAttributeWithValue(el, 'size', 's'),
+        withAttrs: ['size'],
+        comment: 'use tui-pager instead',
+    },
+    {
+        tag: 'timeline-steps',
+        withAttrs: [],
+        comment:
+            'timeline-steps has been removed. Use TuiStepper instead. See example https://taiga-ui.dev/navigation/stepper',
     },
 ];
