@@ -11,8 +11,8 @@ import {
 } from '@angular/core';
 import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
 import {
-    WaMutationObserverService,
     WA_MUTATION_OBSERVER_INIT,
+    WaMutationObserverService,
 } from '@ng-web-apis/mutation-observer';
 import {WaResizeObserverService} from '@ng-web-apis/resize-observer';
 import {tuiInjectElement} from '@taiga-ui/cdk/utils/dom';
@@ -45,9 +45,7 @@ class Styles {}
             },
         },
     ],
-    host: {
-        tuiTruncate: '',
-    },
+    host: {tuiTruncate: ''},
 })
 export class TuiTruncate {
     private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
