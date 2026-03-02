@@ -1,6 +1,6 @@
 import {type TuiLanguageKit} from '@taiga-ui/i18n/types';
 
-export const TUI_JAPAN_LANGUAGE_KIT: TuiLanguageKit = {
+export const TUI_JAPANESE_LANGUAGE_KIT: TuiLanguageKit = {
     cancel: 'キャンセル',
     done: '終わり',
     more: 'もっと',
@@ -21,7 +21,6 @@ export const TUI_JAPAN_LANGUAGE_KIT: TuiLanguageKit = {
         'HH AA': 'HH AA',
         HH: 'HH',
         'MM:SS.MSS': 'MM:SS.MSS',
-        'MM.SS.MSS': 'MM.SS.MSS',
         'SS.MSS': 'SS.MSS',
     },
     dateTexts: {

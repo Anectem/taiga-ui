@@ -176,7 +176,7 @@ test.describe('InputDateTime', () => {
             await timeModeSelect.selectOptions([2]);
 
             await expect(
-                timeModeRow.locator('tui-textfield').getByRole('textbox'),
+                timeModeRow.locator('tui-textfield').getByRole('combobox'),
             ).toHaveValue('HH:MM:SS');
 
             await inputDateTime.textfield.focus();
@@ -189,14 +189,14 @@ test.describe('InputDateTime', () => {
             await timeModeSelect.selectOptions([4]);
 
             await expect(
-                timeModeRow.locator('tui-textfield').getByRole('textbox'),
+                timeModeRow.locator('tui-textfield').getByRole('combobox'),
             ).toHaveValue('HH:MM:SS.MSS');
 
             await inputDateTime.textfield.focus();
 
             await expect
                 .soft(inputDateTime.host)
-                .toHaveScreenshot('03-timeMode=HH:MM.SS.MSS.png');
+                .toHaveScreenshot('03-timeMode=HH:MM:SS.MSS.png');
         });
 
         // TODO: remove skip after https://github.com/taiga-family/taiga-ui/issues/12707

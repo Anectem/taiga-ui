@@ -308,6 +308,22 @@ export const IDENTIFIERS_TO_REPLACE: ReplacementIdentifierMulti[] = [
         },
     },
     {
+        from: [
+            {
+                name: 'TuiFieldErrorPipe',
+                moduleSpecifier: '@taiga-ui/kit',
+            },
+            {
+                name: 'TuiFieldErrorContentPipe',
+                moduleSpecifier: '@taiga-ui/kit',
+            },
+        ],
+        to: {
+            name: 'TuiError',
+            moduleSpecifier: '@taiga-ui/core',
+        },
+    },
+    {
         from: {
             name: 'TUI_VALIDATION_ERRORS',
             moduleSpecifier: '@taiga-ui/kit',
@@ -315,6 +331,106 @@ export const IDENTIFIERS_TO_REPLACE: ReplacementIdentifierMulti[] = [
         to: {
             name: 'TUI_VALIDATION_ERRORS',
             moduleSpecifier: '@taiga-ui/core',
+        },
+    },
+    {
+        from: {
+            name: 'tuiInputDateOptionsProviderNew',
+            moduleSpecifier: '@taiga-ui/kit',
+        },
+        to: {
+            name: 'tuiInputDateOptionsProvider',
+            moduleSpecifier: '@taiga-ui/kit',
+        },
+    },
+    {
+        from: {
+            name: 'TuiInitialsPipe',
+            moduleSpecifier: '@taiga-ui/core',
+        },
+        to: {
+            name: 'TuiInitialsPipe',
+            moduleSpecifier: '@taiga-ui/kit',
+        },
+    },
+    {
+        from: {
+            name: 'TUI_JAPAN_LANGUAGE',
+            moduleSpecifier: '@taiga-ui/i18n',
+        },
+        to: {
+            name: 'TUI_JAPANESE_LANGUAGE',
+            moduleSpecifier: '@taiga-ui/i18n',
+        },
+    },
+    {
+        from: {
+            name: 'TUI_JAPAN_LANGUAGE_ADDON_COMMERCE',
+            moduleSpecifier: '@taiga-ui/i18n',
+        },
+        to: {
+            name: 'TUI_JAPANESE_LANGUAGE_ADDON_COMMERCE',
+            moduleSpecifier: '@taiga-ui/i18n',
+        },
+    },
+    {
+        from: {
+            name: 'TUI_JAPAN_LANGUAGE_ADDON_EDITOR',
+            moduleSpecifier: '@taiga-ui/i18n',
+        },
+        to: {
+            name: 'TUI_JAPANESE_LANGUAGE_ADDON_EDITOR',
+            moduleSpecifier: '@taiga-ui/i18n',
+        },
+    },
+    {
+        from: {
+            name: 'TUI_JAPAN_LANGUAGE_ADDON_TABLE',
+            moduleSpecifier: '@taiga-ui/i18n',
+        },
+        to: {
+            name: 'TUI_JAPANESE_LANGUAGE_ADDON_TABLE',
+            moduleSpecifier: '@taiga-ui/i18n',
+        },
+    },
+    {
+        from: {
+            name: 'TUI_JAPAN_LANGUAGE_CORE',
+            moduleSpecifier: '@taiga-ui/i18n',
+        },
+        to: {
+            name: 'TUI_JAPANESE_LANGUAGE_CORE',
+            moduleSpecifier: '@taiga-ui/i18n',
+        },
+    },
+    {
+        from: {
+            name: 'TUI_JAPAN_LANGUAGE_COUNTRIES',
+            moduleSpecifier: '@taiga-ui/i18n',
+        },
+        to: {
+            name: 'TUI_JAPANESE_LANGUAGE_COUNTRIES',
+            moduleSpecifier: '@taiga-ui/i18n',
+        },
+    },
+    {
+        from: {
+            name: 'TUI_JAPAN_LANGUAGE_KIT',
+            moduleSpecifier: '@taiga-ui/i18n',
+        },
+        to: {
+            name: 'TUI_JAPANESE_LANGUAGE_KIT',
+            moduleSpecifier: '@taiga-ui/i18n',
+        },
+    },
+    {
+        from: {
+            name: 'TUI_JAPAN_LANGUAGE_LAYOUT',
+            moduleSpecifier: '@taiga-ui/i18n',
+        },
+        to: {
+            name: 'TUI_JAPANESE_LANGUAGE_LAYOUT',
+            moduleSpecifier: '@taiga-ui/i18n',
         },
     },
 ];
