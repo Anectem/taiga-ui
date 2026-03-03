@@ -5,9 +5,8 @@
 >
     <ng-template pageTab>
         <p>
-            <code>tuiTruncate</code>
-            truncated with an ellipsis in the middle. If the length is odd, the left part is one character longer. In
-            this case, the file extension is not considered and remains visible.
+            Truncates text with an ellipsis in the middle. Useful when both start and end of the string are relevant,
+            such as long file names with extension.
         </p>
 
         <tui-doc-example
@@ -67,7 +66,7 @@
                 Font size
             </tr>
             <tr
-                name="[style.font-size.px]"
+                name="[style.word-break]"
                 tuiDocAPIItem
                 type="string"
                 [items]="wordBreakStyles"
