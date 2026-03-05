@@ -27,7 +27,7 @@ import {TUI_SCROLL_REF, TuiScrollControls} from '@taiga-ui/core/components/scrol
 import {TuiButtonX} from '@taiga-ui/core/directives/button-x';
 import {TUI_ITEMS_HANDLERS} from '@taiga-ui/core/directives/items-handlers';
 // TODO: move FilterByInput to @taiga-ui/core before merge
-import {tuiFilterByInputOptionsProvider} from '@taiga-ui/kit/pipes';
+import {tuiFilterByInputOptionsProvider} from '@taiga-ui/kit/pipes/filter-by-input';
 import {PolymorpheusOutlet} from '@taiga-ui/polymorpheus';
 import {filter, fromEvent} from 'rxjs';
 
