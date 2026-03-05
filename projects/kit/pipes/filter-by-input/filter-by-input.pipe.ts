@@ -6,99 +6,73 @@ import {
     signal,
     untracked,
 } from '@angular/core';
-import {TUI_DEFAULT_MATCHER} from '@taiga-ui/cdk/constants';
-import {type TuiStringHandler, type TuiStringMatcher} from '@taiga-ui/cdk/types';
+import {type TuiStringHandler} from '@taiga-ui/cdk/types';
 import {TuiTextfieldComponent} from '@taiga-ui/core/components/textfield';
 import {TUI_ITEMS_HANDLERS} from '@taiga-ui/core/directives/items-handlers';
 import {tuiIsFlat} from '@taiga-ui/kit/utils';
 
+import {
+    TUI_FILTER_BY_INPUT_OPTIONS,
+    type TuiFilterByInputOptions,
+} from './filter-by-input.options';
+
 @Pipe({name: 'tuiFilterByInput', pure: false})
 export class TuiFilterByInputPipe implements PipeTransform {
+    private readonly options = inject(TUI_FILTER_BY_INPUT_OPTIONS);
     private readonly textfield = inject(TuiTextfieldComponent);
     private readonly handlers = inject(TUI_ITEMS_HANDLERS);
-    private readonly multi = this.textfield.el.matches('[multi]');
-    private readonly matcher = signal<TuiStringMatcher<any>>(TUI_DEFAULT_MATCHER);
+    private readonly filterFlat = signal<TuiFilterByInputOptions['filter']>(
+        this.options.filter,
+    );
+
     private readonly items = signal<readonly any[] | null>([]);
-    private readonly filtered = computed(() =>
-        this.filter(
-            this.items(),
-            this.matcher(),
-            this.handlers.stringify(),
-            this.textfield.value(),
-        ),
+    private readonly filtered = computed(
+        (items = this.items()) =>
+            items &&
+            this.filter(
+                items,
+                this.filterFlat(),
+                this.handlers.stringify(),
+                this.textfield.value(),
+            ),
     );
 
     public transform<T>(
         items: ReadonlyArray<readonly T[]>,
-        matcher?: TuiStringMatcher<T>,
+        filter?: TuiFilterByInputOptions<T>['filter'],
     ): ReadonlyArray<readonly T[]>;
-    public transform<T>(items: readonly T[], matcher?: TuiStringMatcher<T>): readonly T[];
+    public transform<T>(
+        items: readonly T[],
+        filter?: TuiFilterByInputOptions<T>['filter'],
+    ): readonly T[];
     public transform<T>(
         items: ReadonlyArray<readonly T[]> | null,
-        matcher?: TuiStringMatcher<T>,
+        filter?: TuiFilterByInputOptions<T>['filter'],
     ): ReadonlyArray<readonly T[]> | null;
     public transform<T>(
         items: readonly T[] | null,
-        matcher?: TuiStringMatcher<T>,
+        filter?: TuiFilterByInputOptions<T>['filter'],
     ): readonly T[] | null;
     public transform<T>(
         items: ReadonlyArray<readonly T[]> | readonly T[] | null,
-        matcher: TuiStringMatcher<T> = TUI_DEFAULT_MATCHER,
+        filter: TuiFilterByInputOptions<T>['filter'] = this.options.filter,
     ): ReadonlyArray<readonly T[]> | readonly T[] | null {
         untracked(() => {
             this.items.set(items);
-            this.matcher.set(matcher);
+            this.filterFlat.set(filter);
         });
 
         return this.filtered() as ReadonlyArray<readonly T[]> | readonly T[] | null;
     }
 
     private filter<T>(
-        items: ReadonlyArray<readonly T[]> | readonly T[] | null,
-        matcher: TuiStringMatcher<T>,
+        items: ReadonlyArray<readonly T[]> | readonly T[],
+        filterFlat: TuiFilterByInputOptions<T>['filter'],
         stringify: TuiStringHandler<T>,
         query: string,
     ): ReadonlyArray<readonly T[]> | readonly T[] | null {
-        if (!items) {
-            return null;
-        }
-
         return tuiIsFlat(items)
-            ? this.filterFlat(items, matcher, stringify, query)
-            : this.filter2d(items, matcher, stringify, query);
-    }
-
-    private filterFlat<T>(
-        items: readonly T[],
-        matcher: TuiStringMatcher<T>,
-        stringify: TuiStringHandler<T>,
-        query: string,
-    ): readonly T[] {
-        return this.getMatch(items, stringify, query.toLocaleLowerCase()) != null
-            ? items
-            : items.filter((item) => matcher(item, query, stringify));
-    }
-
-    private filter2d<T>(
-        items: ReadonlyArray<readonly T[]>,
-        matcher: TuiStringMatcher<T>,
-        stringify: TuiStringHandler<T>,
-        query: string,
-    ): ReadonlyArray<readonly T[]> {
-        return items.find(
-            (item) => this.getMatch(item, stringify, query.toLocaleLowerCase()) != null,
-        ) != null
-            ? items
-            : items.map((inner) => this.filterFlat(inner, matcher, stringify, query));
-    }
-
-    private getMatch<T>(
-        items: readonly T[],
-        stringify: TuiStringHandler<T>,
-        query: string,
-    ): T | undefined {
-        return this.multi
-            ? undefined
-            : items.find((item) => stringify(item).toLocaleLowerCase() === query);
+            ? filterFlat(items, query, stringify)
+            : items.map((inner) => filterFlat(inner, query, stringify));
     }
 }

@@ -2,11 +2,11 @@ import {Component} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {changeDetection} from '@demo/emulate/change-detection';
 import {encapsulation} from '@demo/emulate/encapsulation';
-import {type TuiStringMatcher} from '@taiga-ui/cdk';
 import {
     TuiChevron,
     TuiComboBox,
     TuiDataListWrapper,
+    type TuiFilterByInputOptions,
     TuiFilterByInputPipe,
 } from '@taiga-ui/kit';
 
@@ -47,12 +47,16 @@ export default class Example {
 
     protected value: string | null = null;
 
-    protected readonly matcher: TuiStringMatcher<string> = (item, query) => {
-        const romanNumeral = item.split(' ').at(-1)!;
+    protected readonly filter: TuiFilterByInputOptions<string>['filter'] = (
+        items,
+        query,
+    ) =>
+        items.filter((item) => {
+            const romanNumeral = item.split(' ').at(-1)!;
 
-        return (
-            query === ROMAN_TO_LATIN[romanNumeral] ||
-            item.toLowerCase().includes(query.toLowerCase())
-        );
-    };
+            return (
+                query === ROMAN_TO_LATIN[romanNumeral] ||
+                item.toLowerCase().includes(query.toLowerCase())
+            );
+        });
 }
